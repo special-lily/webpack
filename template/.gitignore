@@ -1,6 +1,6 @@
 .DS_Store
 node_modules/
-/dist/
+#/dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -13,7 +13,7 @@ selenium-debug.log
 {{/e2e}}
 
 # Editor directories and files
-.idea
+.idea/
 .vscode
 *.suo
 *.ntvs*
