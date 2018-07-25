@@ -1,10 +1,3 @@
-/* eslint-disable */
-Array.prototype.remove = function (val) {
-  var index = this.indexOf(val)
-  if (index > -1) {
-    this.splice(index, 1)
-  }
-}
 
 export const utils = {
   pageLock: function () {
@@ -14,35 +7,36 @@ export const utils = {
     document.removeEventListener("touchmove", utils.pageLockHandler, false)
   },
   pageLockHandler: function (e) {
-    e.preventDefault()
+    e.preventDefault();
   }
-}
+};
+
 
 /*
 金额格式化
-*/
+    */
 export function formatCurrency(s) {
   if (!/^(-?\d+)(\.\d*)?$/.test(s)) {
-    return 'invalid value'
+    return 'invalid value';
   }
 
-  let sign = ''
-  s = Number(s)
+  let sign = '';
+  s = Number(s);
   if (s < 0) {
-    sign = '-'
+    sign = '-';
   } else {
-    sign = ''
+    sign = '';
   }
-  s = Math.abs(s)
+  s = Math.abs(s);
   if (/^\d+$/.test(s)) {
-    return (sign + (s + '').replace(/\B(?=(\d{3})+$)/g, ',') + '.00')
+    return (sign + (s + '').replace(/\B(?=(\d{3})+$)/g, ',') + '.00');
   }
   if (/^(\d+)\.(\d+)$/.test(s)) {
-    s = s + '0'
-    var v = s.split('.')
-    var f = (v[0] + '').replace(/\B(?=(\d{3})+$)/g, ',')
-    var h = v[1].substring(0, 2)
-    return (sign + f + '.' + h)
+    s = s + '0';
+    var v = s.split('.');
+    var f = (v[0] + '').replace(/\B(?=(\d{3})+$)/g, ',');
+    var h = v[1].substring(0, 2);
+    return (sign + f + '.' + h);
   }
 }
 
@@ -51,10 +45,10 @@ export function formatCurrency(s) {
  * @returns {null}
  */
 export function getUrlString(name) {
-  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i")
-  var r = window.location.search.substr(1).match(reg)
-  if (r != null) return decodeURIComponent(r[2])
-  return null
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+  var r = window.location.search.substr(1).match(reg);
+  if (r != null) return decodeURIComponent(r[2]);
+  return null;
 }
 
 /**
@@ -62,10 +56,11 @@ export function getUrlString(name) {
  * @returns {null}
  */
 export function getAllUrlParams(url) {
-  let url = url ? url : window.location.href
-  let params = url.indexOf("#") > -1 ? url.substring(url.indexOf("?"), url.indexOf("#")) : url.substring(url.indexOf("?"))
-  return params
+  var url = url ? url : window.location.href;
+  var params = url.indexOf("#") > -1 ? url.substring(url.indexOf("?"), url.indexOf("#")) : url.substring(url.indexOf("?"))
+  return params;
 }
+
 
 /*
  操作 sessionstorage
@@ -74,6 +69,7 @@ export function setStorage(name, obj) {
   let str = JSON.stringify(obj)
   sessionStorage[name] = str
 }
+
 export function getStorage(name) {
   if (sessionStorage[name]) {
     return JSON.parse(sessionStorage[name])
@@ -81,6 +77,7 @@ export function getStorage(name) {
     return false
   }
 }
+
 
 /*
  表单验证正则
@@ -135,7 +132,7 @@ export function validator(type, value) {
   }
 
   if (validRules[type]) {
-    var val = validRules[type]["reg"]
+    var val = validRules[type]["reg"];
     if (!val.test(value)) {
       return validRules[type]["str"]
     }
@@ -145,20 +142,21 @@ export function validator(type, value) {
   }
 }
 
+
 /**
  * 仅限数字 并且首位不为0
  * @return number
  */
 export function onlyPositiveNumber(input) {
-  var val = input.val()
-  var _val = ''
+  var val = input.val();
+  var _val = ""
 
   if ('' != val.replace(/^[1-9]\d*$/, '')) {
     var matchVal = val.match(/\d{1,}\.{0,1}\d{0,2}/)
-    if (matchVal === null || matchVal === 0) {
-      _val = ''
+    if (matchVal == null || matchVal == 0) {
+      _val = ""
     } else {
-      _val = matchVal
+      _val = matchVal;
     }
 
     input.val(_val)
@@ -170,16 +168,16 @@ export function onlyPositiveNumber(input) {
  * @return number
  */
 export function onlyNumber(input) {
-  var val = input.val()
-  var _val = ''
+  var val = input.val();
+  var _val = ""
 
   if ('' != val.replace(/^[0-9]\d*$/, '')) {
-    var matchVal = val.match(/\d{1,}\.{0,1}\d{0,2}/)
+    var matchVal = val.match(/\d{1,}\.{0,1}\d{0,2}/);
 
     if (matchVal == null) {
-      _val = ''
+      _val = ""
     } else {
-      _val = matchVal
+      _val = matchVal;
     }
 
     input.val(_val)
@@ -191,56 +189,144 @@ export function onlyNumber(input) {
 * 获取今日前几天的日期
 * */
 export function getBeforeDate(n) {
-  var n = n
-  var d = new Date()
-  var year = d.getFullYear()
-  var mon = d.getMonth() + 1
-  var day = d.getDate()
+  var n = n;
+  var d = new Date();
+  var year = d.getFullYear();
+  var mon = d.getMonth() + 1;
+  var day = d.getDate();
   if (day <= n) {
     if (mon > 1) {
-      mon = mon - 1
+      mon = mon - 1;
     } else {
-      year = year - 1
-      mon = 12
+      year = year - 1;
+      mon = 12;
     }
   }
-  d.setDate(d.getDate() - n)
-  year = d.getFullYear()
-  mon = d.getMonth() + 1
-  day = d.getDate()
-  var s = year + '-' + (mon < 10 ? ('0' + mon) : mon) + '-' + (day < 10 ? ('0' + day) : day)
-  return s
+  d.setDate(d.getDate() - n);
+  year = d.getFullYear();
+  mon = d.getMonth() + 1;
+  day = d.getDate();
+  var s = year + "-" + (mon < 10 ? ('0' + mon) : mon) + "-" + (day < 10 ? ('0' + day) : day);
+  return s;
 }
+
 
 /*
  * 格式化日期
- * formatDate('时间戳','yyyy-MM-dd HH:mm:ss')
+ * formatDate('yyyy-MM-dd HH:mm:ss','时间戳')
  * */
 export function formatDate(format, time) {
-  var t = time !== undefined ? new Date(time) : new Date()
+  var t = time != undefined ? new Date(time) : new Date();
   var tf = function (i) {
     return (i < 10 ? '0' : '') + i
-  }
+  };
   return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function (a) {
     switch (a) {
       case 'yyyy':
-        return tf(t.getFullYear())
-        break
+        return tf(t.getFullYear());
+        break;
       case 'MM':
-        return tf(t.getMonth() + 1)
-        break
+        return tf(t.getMonth() + 1);
+        break;
       case 'mm':
-        return tf(t.getMinutes())
-        break
+        return tf(t.getMinutes());
+        break;
       case 'dd':
-        return tf(t.getDate())
-        break
+        return tf(t.getDate());
+        break;
       case 'HH':
-        return tf(t.getHours())
-        break
+        return tf(t.getHours());
+        break;
       case 'ss':
-        return tf(t.getSeconds())
-        break
+        return tf(t.getSeconds());
+        break;
     }
   })
 }
+
+
+// dataURI转blob 上传文件使用 zx
+export function dataURItoBlob(dataURI) {
+  var byteString = atob(dataURI.split(',')[1]);
+  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+  var ab = new ArrayBuffer(byteString.length);
+  var ia = new Uint8Array(ab);
+  for (var i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  return new Blob([ab], {type: mimeString});
+}
+
+// jsonp请求的简单封装
+export function feJsonp (url, queryObj, successFn, failFn, timeout) {
+  timeout = timeout || 100000
+
+  let queryText = url.indexOf('?') > -1 ? '&' : '?'
+  for (let key in queryObj){
+    queryText += `${key}=${queryObj[key]}&`
+  }
+
+  let cbname = 'fejp_' +  Date.parse(new Date())
+  let srcText = `${url}${queryText}callback=${cbname}`
+
+  let scriptEl = document.createElement("script")
+  scriptEl.src = srcText
+
+  let isout = false
+  const timeId = window.setTimeout(function(){
+    isout = true
+    failFn()
+    document.body.removeChild(scriptEl)
+  }, timeout)
+
+  window[cbname] = function (res) {
+    if (isout) {
+      return false
+    } else {
+      successFn(res)
+      window.clearTimeout(timeId)
+      document.body.removeChild(scriptEl)
+    }
+  }
+
+
+  document.body.appendChild(scriptEl)
+}
+
+export const docCookies = {
+  getItem: function (sKey) {
+    return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+  },
+  setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+    if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+    var sExpires = "";
+    if (vEnd) {
+      switch (vEnd.constructor) {
+        case Number:
+          sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+          break;
+        case String:
+          sExpires = "; expires=" + vEnd;
+          break;
+        case Date:
+          sExpires = "; expires=" + vEnd.toUTCString();
+          break;
+      }
+    }
+    document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+    return true;
+  },
+  removeItem: function (sKey, sPath, sDomain) {
+    if (!sKey || !this.hasItem(sKey)) { return false; }
+    document.cookie = encodeURIComponent(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + ( sDomain ? "; domain=" + sDomain : "") + ( sPath ? "; path=" + sPath : "");
+    return true;
+  },
+  hasItem: function (sKey) {
+    return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+  },
+  keys: /* optional method: you can safely remove it! */ function () {
+    var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+    for (var nIdx = 0; nIdx < aKeys.length; nIdx++) { aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]); }
+    return aKeys;
+  }
+};
